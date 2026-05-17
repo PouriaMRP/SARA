@@ -1,0 +1,55 @@
+plugins {
+    id 'com.android.application'
+}
+
+android {
+    compileSdk 33
+
+    defaultConfig {
+        applicationId "com.example.memorial"
+        minSdk 16
+        targetSdk 33
+        versionCode 1
+        versionName "1.0"
+    }
+
+    signingConfigs {
+        release {
+            // read signing properties from environment variables (set in CI or locally)
+            def keystoreFile = System.getenv('KEYSTORE_FILE')
+            def keystorePassword = System.getenv('KEYSTORE_PASSWORD')
+            def keyAlias = System.getenv('KEY_ALIAS')
+            def keyPassword = System.getenv('KEY_PASSWORD')
+            if (keystoreFile != null) {
+                storeFile file(keystoreFile)
+            }
+            if (keystorePassword != null) {
+                storePassword keystorePassword
+            }
+            if (keyAlias != null) {
+                keyAlias keyAlias
+            }
+            if (keyPassword != null) {
+                keyPassword keyPassword
+            }
+        }
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.release
+        }
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+}
+
+dependencies {
+    implementation 'androidx.appcompat:appcompat:1.6.1'
+    implementation 'com.google.android.material:material:1.9.0'
+}
